@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("student") // student, mentor, admin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  posts     Post[]
+  comments  Comment[]
+  
+  // Mentor specific
+  bookingsAsMentor Booking[] @relation("MentorBookings")
+  bookingsAsStudent Booking[] @relation("StudentBookings")
+
+  // Roadmaps
+  roadmaps  Roadmap[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  category  String   // e.g. "Education", "Sports"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  comments  Comment[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  postId    Int
+  post      Post     @relation(fields: [postId], references: [id])
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+model Booking {
+  id          Int      @id @default(autoincrement())
+  mentorId    Int
+  studentId   Int
+  date        DateTime
+  status      String   @default("pending") // pending, confirmed, cancelled
+  mentor      User     @relation("MentorBookings", fields: [mentorId], references: [id])
+  student     User     @relation("StudentBookings", fields: [studentId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Roadmap {
+  id          Int      @id @default(autoincrement())
+  title       String
+  goal        String
+  milestones  String   // Storing as JSON string
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+}
