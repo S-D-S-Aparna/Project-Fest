@@ -40,8 +40,16 @@
 2. Run `npm install` in both the `client` and `server` directories.
 3. Configure your `.env` files in both directories based on your local setup.
 4. Run `npx prisma db push` and `npx prisma generate` in the `server` directory.
-5. Start the backend: `cd server && npm run dev`
-6. Start the frontend: `cd client && npm run dev`
+5. Open a terminal and start the backend: 
+   ```bash
+   cd server
+   npm run dev
+   ```
+6. Open a **new, separate terminal** and start the frontend:
+   ```bash
+   cd client
+   npm run dev
+   ```
 7. Visit `http://localhost:3000`
 
 ---

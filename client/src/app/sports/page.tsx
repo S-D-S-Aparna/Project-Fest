@@ -23,12 +23,12 @@ export default function SportsHome() {
           Turn your passion for sports into a career. Discover academies, training roadmaps, coaches, and scholarships for major sports in India.
         </p>
         <div className="flex gap-4">
-          <button className="bg-white text-green-700 px-5 py-2 rounded-lg font-semibold hover:bg-green-50 transition-colors shadow-sm text-sm">
-            Find Academies
-          </button>
-          <button className="bg-green-800/40 border border-green-400 hover:bg-green-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm">
-            Sports Scholarships
-          </button>
+          <a href="/roadmap" className="bg-white text-green-700 px-5 py-2 rounded-lg font-semibold hover:bg-green-50 transition-colors shadow-sm text-sm inline-block text-center">
+            Sports Roadmaps
+          </a>
+          <Link href="/mentors" className="bg-green-800/40 border border-green-400 hover:bg-green-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm inline-block text-center text-white">
+            Find Coaches
+          </Link>
         </div>
       </div>
 
@@ -36,33 +36,37 @@ export default function SportsHome() {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm mb-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Explore Sports</h2>
-            <div className="flex flex-wrap gap-3">
-              {sportsList.map((sport, idx) => (
-                <div key={idx} className="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-green-50 hover:text-green-700 hover:border-green-200 transition-colors cursor-pointer text-sm">
-                  {sport}
-                </div>
-              ))}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {sportsList.map((sport, idx) => {
+                const slug = sport.toLowerCase().replace(/\s+/g, '-');
+                return (
+                <Link href={`/sports/${slug}`} key={idx} className="bg-white border border-gray-100 text-gray-700 px-4 py-3 rounded-xl font-medium shadow-sm hover:shadow-md hover:bg-green-50 hover:text-green-700 hover:border-green-200 transition-all cursor-pointer flex items-center justify-between group">
+                  <span>{sport}</span>
+                  <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-green-600 transition-colors" />
+                </Link>
+                );
+              })}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+             <Link href="/sports/career-roadmap" className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow block">
                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mb-3">
                  <Shield className="w-5 h-5 text-amber-600" />
                </div>
                <h3 className="font-bold text-gray-800 mb-1">Career Opportunities</h3>
                <p className="text-sm text-gray-500 mb-3">Explore roles like Coach, Sports Analyst, Physiotherapist, and more.</p>
                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">Explore Careers <ArrowRight className="w-3 h-3" /></span>
-             </div>
+             </Link>
              
-             <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+             <Link href="/sports/career-roadmap" className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow block">
                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-3">
                  <Target className="w-5 h-5 text-blue-600" />
                </div>
                <h3 className="font-bold text-gray-800 mb-1">Training Roadmaps</h3>
                <p className="text-sm text-gray-500 mb-3">Step-by-step guides from beginner to professional level athletes.</p>
                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">View Roadmaps <ArrowRight className="w-3 h-3" /></span>
-             </div>
+             </Link>
           </div>
         </div>
 
@@ -86,6 +90,22 @@ export default function SportsHome() {
                Find Mentors
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Conclusion & Exploring Direction */}
+      <div className="bg-orange-50 border border-orange-100 rounded-2xl p-8 text-center mb-8">
+        <h2 className="text-xl font-bold text-gray-800 mb-3">Ready to level up your game?</h2>
+        <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+          Whether you&apos;re aiming for professional leagues or just getting started, expert guidance makes all the difference. Connect with top sports mentors or generate a custom training roadmap to reach your goals.
+        </p>
+        <div className="flex justify-center gap-4">
+           <Link href="/mentors" className="bg-orange-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-orange-700 transition-colors shadow-sm text-sm inline-block text-center">
+             Connect with Coach
+           </Link>
+           <a href="/roadmap" className="bg-white border border-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition-colors text-sm">
+             Create Roadmap
+           </a>
         </div>
       </div>
     </MainLayout>

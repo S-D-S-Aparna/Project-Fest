@@ -24,7 +24,7 @@ export default function UserDashboard() {
 
   useEffect(() => {
     if (user && token) {
-      axios.get(`http://localhost:5000/api/users/${user.userId}/dashboard`, {
+      axios.get(`http://localhost:5000/api/users/${user.id}/dashboard`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {

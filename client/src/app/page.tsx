@@ -1,7 +1,7 @@
 "use client";
 
 import MainLayout from "@/components/layout/MainLayout";
-import { GraduationCap, Target, BookOpen, Palette, Rocket, ArrowRight, Star, Award, Briefcase, Zap, Bot } from "lucide-react";
+import { GraduationCap, Target, BookOpen, Palette, Rocket, ArrowRight, Star, Award, Briefcase, Zap, Bot, Users } from "lucide-react";
 import Link from "next/link";
 
 const modules = [
@@ -53,12 +53,12 @@ export default function Home() {
             Get personalized career guidance, connect with mentors, and join communities that share your interests.
           </p>
           <div className="flex gap-4">
-            <button className="bg-white text-indigo-700 px-6 py-2.5 rounded-lg font-semibold shadow hover:bg-gray-50 transition-colors">
+            <a href="/roadmap" className="bg-white text-indigo-700 px-6 py-2.5 rounded-lg font-semibold shadow hover:bg-gray-50 transition-colors inline-block text-center">
               Explore Careers
-            </button>
-            <button className="bg-indigo-800/50 hover:bg-indigo-800 text-white px-6 py-2.5 rounded-lg font-semibold backdrop-blur-sm transition-colors border border-indigo-500/30">
-              Talk to AI Mentor
-            </button>
+            </a>
+            <Link href="/mentors" className="bg-indigo-800/50 hover:bg-indigo-800 text-white px-6 py-2.5 rounded-lg font-semibold backdrop-blur-sm transition-colors border border-indigo-500/30 inline-block text-center">
+              Find a Mentor
+            </Link>
           </div>
         </div>
         {/* Decorative elements */}
@@ -113,16 +113,18 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[1, 2].map((m) => (
-                <div key={m} className="flex gap-4 p-4 border border-gray-100 rounded-lg">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex-shrink-0"></div>
+                <Link href="/mentors" key={m} className="flex gap-4 p-4 border border-gray-100 rounded-lg hover:shadow-md hover:border-indigo-200 transition-all cursor-pointer">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden">
+                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah`} alt="Mentor" className="w-full h-full object-cover" />
+                  </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 text-sm">Dr. Sarah Jenkins</h4>
-                    <p className="text-xs text-gray-500 mb-2">AI Researcher @ Tech Corp</p>
+                    <p className="text-xs text-gray-500 mb-2">Mentor @ Be You</p>
                     <div className="flex items-center gap-1 text-xs font-medium text-amber-500">
                       <Star className="w-3 h-3 fill-current" /> 4.9 (120 reviews)
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

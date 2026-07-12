@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 // Book a session
 router.post("/", authenticateToken, async (req: AuthRequest, res) => {
   try {
-    const { mentorId, date } = req.body;
+    const { mentorId, date, stream, notes } = req.body;
     
     if (!req.user) return res.status(401).json({ error: "Unauthorized" });
 
@@ -18,11 +18,16 @@ router.post("/", authenticateToken, async (req: AuthRequest, res) => {
       return res.status(400).json({ error: "Invalid mentor" });
     }
 
+    const meetingLink = `https://meet.google.com/mock-${Math.random().toString(36).substring(7)}`;
+
     const booking = await prisma.booking.create({
       data: {
         mentorId,
         studentId: req.user.userId,
-        date: new Date(date)
+        date: new Date(date),
+        stream,
+        notes,
+        meetingLink
       },
       include: {
         mentor: { select: { name: true } },

@@ -31,24 +31,28 @@ export default function CoCurricular() {
           Unleash your creativity and passions. Discover mentors, workshops, and competitions to help you build an amazing portfolio outside of academics.
         </p>
         <div className="flex gap-4">
-          <button className="bg-white text-pink-700 px-5 py-2 rounded-lg font-semibold hover:bg-pink-50 transition-colors shadow-sm text-sm">
-            Find Workshops
-          </button>
-          <button className="bg-pink-800/40 border border-pink-400 hover:bg-pink-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm">
-            Portfolio Guidance
-          </button>
+          <a href="/mentors" className="bg-white text-pink-700 px-5 py-2 rounded-lg font-semibold hover:bg-pink-50 transition-colors shadow-sm text-sm inline-block text-center">
+            Find Mentors
+          </a>
+          <a href="/roadmap" className="bg-pink-800/40 border border-pink-400 hover:bg-pink-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm inline-block text-center text-white">
+            Build Portfolio
+          </a>
         </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
-        {activities.map((act, idx) => (
-          <div key={idx} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-pink-200 transition-all cursor-pointer flex flex-col items-center justify-center text-center group">
+        {activities.map((act, idx) => {
+          const slug = act.name.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
+          return (
+          <Link href={`/co-curricular/${slug}`} key={idx} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-pink-200 transition-all cursor-pointer flex flex-col items-center justify-center text-center group block">
             <div className="w-12 h-12 bg-pink-50 text-pink-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
               <act.icon className="w-6 h-6" />
             </div>
             <h3 className="font-semibold text-gray-800 text-sm group-hover:text-pink-600 transition-colors">{act.name}</h3>
-          </div>
-        ))}
+            <h3 className="font-semibold text-gray-800 text-sm group-hover:text-pink-600 transition-colors">{act.name}</h3>
+          </Link>
+          );
+        })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
@@ -63,9 +67,9 @@ export default function CoCurricular() {
                     <h3 className="font-bold text-gray-800">National Youth Photography Contest</h3>
                     <p className="text-sm text-gray-500">Win up to ₹50,000 and a feature in leading magazines.</p>
                   </div>
-                  <button className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors whitespace-nowrap">
+                  <Link href="/co-curricular/photography" className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors whitespace-nowrap">
                     Register Now
-                  </button>
+                  </Link>
                 </div>
               ))}
             </div>

@@ -28,6 +28,27 @@ model User {
 
   // Roadmaps
   roadmaps  Roadmap[]
+
+  savedItems     SavedItem[]
+  supportTickets SupportTicket[]
+  eventRegistrations EventRegistration[]
+  mentorProfile  MentorProfile?
+}
+
+model MentorProfile {
+  id              Int      @id @default(autoincrement())
+  userId          Int      @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio             String
+  company         String?
+  role            String?
+  expertise       String[]
+  yearsExperience Int?
+  hourlyRate      Int?
+  rating          Float?   @default(0)
+  totalSessions   Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Post {
@@ -58,6 +79,9 @@ model Booking {
   studentId   Int
   date        DateTime
   status      String   @default("pending") // pending, confirmed, cancelled
+  stream      String?
+  meetingLink String?
+  notes       String?
   mentor      User     @relation("MentorBookings", fields: [mentorId], references: [id])
   student     User     @relation("StudentBookings", fields: [studentId], references: [id])
   createdAt   DateTime @default(now())
@@ -71,4 +95,80 @@ model Roadmap {
   userId      Int
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
+}
+
+model Scholarship {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String
+  amount       String?
+  deadline     DateTime?
+  organization String
+  url          String?
+  createdAt    DateTime @default(now())
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  location    String?
+  type        String   // webinar, career_fair, workshop
+  url         String?
+  createdAt   DateTime @default(now())
+}
+
+model Resource {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  category    String
+  url         String
+  createdAt   DateTime @default(now())
+}
+
+model SavedItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  itemType  String   // scholarship, event, resource, mentor
+  itemId    Int
+  createdAt DateTime @default(now())
+
+  @@unique([userId, itemType, itemId])
+}
+
+model SupportTicket {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  subject   String
+  message   String
+  status    String   @default("open") // open, closed
+  createdAt DateTime @default(now())
+}
+
+model EducationCourse {
+  id             Int      @id @default(autoincrement())
+  title          String
+  category       String
+  duration       String
+  salary         String
+  icon           String
+  color          String
+  careers        String[] // PostgreSQL string array
+  educationLevel String   // after_10th, after_12th, bachelors, masters, phd
+  createdAt      DateTime @default(now())
+}
+
+model EventRegistration {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  eventName String
+  activity  String
+  date      DateTime
+  status    String   @default("confirmed")
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }

@@ -1,16 +1,21 @@
-import { Clock, IndianRupee, Briefcase } from "lucide-react";
+import { Clock, IndianRupee, Briefcase, BookOpen, Cpu, Wrench, Activity, Camera, Laptop, HeartPulse, Leaf, Calculator, Palette, Scale, Building, Plane, Shield, MonitorPlay, Microscope, Database, TrendingUp, FlaskConical, Stethoscope, Globe, BrainCircuit, GraduationCap } from "lucide-react";
+
+const IconMap: Record<string, any> = {
+  BookOpen, Cpu, Wrench, Activity, Camera, Laptop, HeartPulse, Leaf, Calculator, Palette, Scale, Building, Plane, Shield, MonitorPlay, Microscope, Database, Briefcase, TrendingUp, FlaskConical, Stethoscope, Globe, BrainCircuit, GraduationCap
+};
 
 interface CourseCardProps {
   title: string;
   category: string;
   duration: string;
   salary: string;
-  icon: any;
+  icon: string | any;
   color: string;
   careers: string[];
 }
 
-export default function CourseCard({ title, category, duration, salary, icon: Icon, color, careers }: CourseCardProps) {
+export default function CourseCard({ title, category, duration, salary, icon, color, careers }: CourseCardProps) {
+  const Icon = typeof icon === 'string' ? (IconMap[icon] || BookOpen) : icon;
   return (
     <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:border-indigo-100 transition-all cursor-pointer group">
       <div className="flex items-start gap-4 mb-4">

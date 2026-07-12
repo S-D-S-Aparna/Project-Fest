@@ -18,8 +18,8 @@ export default function RoadmapPage() {
 
   const fetchRoadmaps = async () => {
     try {
-      const res = await axios.get(\`\${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/roadmaps\`, {
-        headers: { Authorization: \`Bearer \${token}\` }
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/roadmaps`, {
+        headers: { Authorization: `Bearer ${token}` }
       });
       setRoadmaps(res.data.roadmaps);
     } catch (err) {
@@ -34,9 +34,9 @@ export default function RoadmapPage() {
     setLoading(true);
     try {
       await axios.post(
-        \`\${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/roadmaps\`,
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/roadmaps`,
         { goal },
-        { headers: { Authorization: \`Bearer \${token}\` } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setGoal("");
       fetchRoadmaps();
@@ -141,6 +141,22 @@ export default function RoadmapPage() {
             </div>
           );
         })}
+      </div>
+
+      {/* Conclusion & Exploring Direction */}
+      <div className="bg-purple-50 border border-purple-100 rounded-2xl p-8 text-center mb-8 max-w-4xl mx-auto">
+        <h2 className="text-xl font-bold text-gray-800 mb-3">Got your roadmap? Now what?</h2>
+        <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+          A roadmap is only as good as its execution. Start knocking out those milestones, explore resources related to your goals, or talk to an expert mentor if you hit a roadblock.
+        </p>
+        <div className="flex justify-center gap-4">
+           <a href="/resources" className="bg-purple-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-purple-700 transition-colors shadow-sm text-sm">
+             Explore Resources
+           </a>
+           <a href="/mentors" className="bg-white border border-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition-colors text-sm">
+             Talk to a Mentor
+           </a>
+        </div>
       </div>
     </MainLayout>
   );

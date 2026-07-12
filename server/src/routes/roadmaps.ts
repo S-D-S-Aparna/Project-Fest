@@ -48,7 +48,7 @@ router.post("/", authenticateToken, async (req: AuthRequest, res) => {
 
     const roadmap = await prisma.roadmap.create({
       data: {
-        title: \`Roadmap to: \${goal}\`,
+        title: `Roadmap to: ${goal}`,
         goal,
         milestones: milestonesStr,
         userId: req.user!.userId

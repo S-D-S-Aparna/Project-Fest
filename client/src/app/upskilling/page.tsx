@@ -33,15 +33,15 @@ export default function Upskilling() {
             Stay ahead of the curve. Master trending skills like Agentic AI, Cloud Computing, and Data Science. Build projects, earn certifications, and land your dream job.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="bg-white text-purple-700 px-5 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors shadow-sm text-sm">
-              Explore Learning Paths
-            </button>
-            <button className="bg-purple-800/40 border border-purple-400 hover:bg-purple-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm">
-              Resume Builder
-            </button>
-            <button className="bg-purple-800/40 border border-purple-400 hover:bg-purple-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm">
-              Interview Prep
-            </button>
+            <a href="/roadmap" className="bg-white text-purple-700 px-5 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors shadow-sm text-sm text-center inline-block">
+              AI Roadmap
+            </a>
+            <a href="/mentors" className="bg-purple-800/40 border border-purple-400 hover:bg-purple-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm text-center inline-block">
+              Talk to Expert
+            </a>
+            <a href="/resources" className="bg-purple-800/40 border border-purple-400 hover:bg-purple-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm text-center inline-block">
+              Study Resources
+            </a>
           </div>
         </div>
       </div>
@@ -49,15 +49,18 @@ export default function Upskilling() {
       <div className="mb-8">
         <h2 className="text-xl font-bold text-gray-800 mb-6">Trending Skills</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {technologies.map((tech, idx) => (
-            <div key={idx} className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:border-purple-300 transition-all cursor-pointer group">
+          {technologies.map((tech, idx) => {
+            const slug = tech.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+            return (
+            <Link href={`/upskilling/${slug}`} key={idx} className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:border-purple-300 transition-all cursor-pointer group flex flex-col items-start">
               <div className="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                 <tech.icon className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-gray-800 text-sm group-hover:text-purple-700 transition-colors">{tech.name}</h3>
               <p className="text-xs text-gray-500 mt-1">{tech.category}</p>
-            </div>
-          ))}
+            </Link>
+            );
+          })}
         </div>
       </div>
 
@@ -76,9 +79,9 @@ export default function Upskilling() {
                     <h3 className="font-bold text-gray-800">Build an AI Customer Support Agent</h3>
                     <p className="text-sm text-gray-500">Learn to integrate LLMs, function calling, and vector databases in 4 weeks.</p>
                   </div>
-                  <button className="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-200 transition-colors whitespace-nowrap">
+                  <Link href="/upskilling/projects" className="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-200 transition-colors whitespace-nowrap block text-center">
                     Start Project
-                  </button>
+                  </Link>
                 </div>
               ))}
             </div>

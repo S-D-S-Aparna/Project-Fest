@@ -81,13 +81,29 @@ export default function EducationHome() {
             <p className="text-indigo-200 mb-6 text-sm leading-relaxed max-w-sm">
               Not sure which degree or college is right for you? Let Be You AI build a personalized education roadmap based on your interests and strengths.
             </p>
-            <button className="bg-white text-indigo-900 px-6 py-2.5 rounded-lg font-semibold shadow hover:bg-indigo-50 transition-colors text-sm">
+            <a href="/roadmap" className="inline-block bg-white text-indigo-900 px-6 py-2.5 rounded-lg font-semibold shadow hover:bg-indigo-50 transition-colors text-sm">
               Generate My Roadmap
-            </button>
+            </a>
           </div>
           <div className="absolute right-0 bottom-0 opacity-20 transform translate-x-1/4 translate-y-1/4">
              <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
           </div>
+        </div>
+      </div>
+
+      {/* Conclusion & Exploring Direction */}
+      <div className="bg-blue-50 border border-blue-100 rounded-2xl p-8 text-center mb-8">
+        <h2 className="text-xl font-bold text-gray-800 mb-3">What's Next in your Education?</h2>
+        <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+          Now that you've explored different educational paths, it's time to take action. You can connect with an expert mentor to discuss your options or browse our extensive resource library.
+        </p>
+        <div className="flex justify-center gap-4">
+           <a href="/mentors" className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm text-sm">
+             Talk to a Mentor
+           </a>
+           <a href="/resources" className="bg-white border border-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition-colors text-sm">
+             View Resources
+           </a>
         </div>
       </div>
     </MainLayout>

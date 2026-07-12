@@ -7,6 +7,13 @@ import communityRoutes from './routes/community';
 import bookingRoutes from './routes/bookings';
 import chatRoutes from './routes/chat';
 import roadmapsRoutes from './routes/roadmaps';
+import scholarshipsRoutes from './routes/scholarships';
+import resourcesRoutes from './routes/resources';
+import eventsRoutes from './routes/events';
+import savedRoutes from './routes/saved';
+import supportRoutes from './routes/support';
+import educationRoutes from './routes/education';
+import eventRegistrationsRoutes from './routes/event-registrations';
 
 dotenv.config();
 
@@ -23,6 +30,13 @@ app.use('/api/community', communityRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/roadmaps', roadmapsRoutes);
+app.use('/api/scholarships', scholarshipsRoutes);
+app.use('/api/resources', resourcesRoutes);
+app.use('/api/events', eventsRoutes);
+app.use('/api/saved', savedRoutes);
+app.use('/api/support', supportRoutes);
+app.use('/api/education', educationRoutes);
+app.use('/api/event-registrations', eventRegistrationsRoutes);
 
 app.get('/', (req, res) => {
   res.send('Be You API is running...');

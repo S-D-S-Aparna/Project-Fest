@@ -47,12 +47,42 @@ router.get("/mentors", async (req, res) => {
   try {
     const mentors = await prisma.user.findMany({
       where: { role: "mentor" },
-      select: { id: true, name: true, email: true }
+      select: { 
+        id: true, 
+        name: true, 
+        email: true,
+        mentorProfile: true
+      }
     });
     res.status(200).json({ mentors });
   } catch (error) {
     console.error("Error fetching mentors:", error);
     res.status(500).json({ error: "Failed to fetch mentors" });
+  }
+});
+
+// Get single mentor by ID
+router.get("/mentors/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const mentor = await prisma.user.findFirst({
+      where: { id: parseInt(id), role: "mentor" },
+      select: { 
+        id: true, 
+        name: true, 
+        email: true,
+        mentorProfile: true 
+      }
+    });
+    
+    if (!mentor) {
+      return res.status(404).json({ error: "Mentor not found" });
+    }
+    
+    res.status(200).json({ mentor });
+  } catch (error) {
+    console.error("Error fetching mentor:", error);
+    res.status(500).json({ error: "Failed to fetch mentor details" });
   }
 });
 

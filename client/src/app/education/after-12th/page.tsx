@@ -2,94 +2,26 @@
 
 import MainLayout from "@/components/layout/MainLayout";
 import CourseCard from "@/components/education/CourseCard";
-import { Laptop, HeartPulse, Leaf, Calculator, Palette, Scale, Building, Plane, Shield, MonitorPlay, ChevronRight } from "lucide-react";
+import { MonitorPlay, ChevronRight } from "lucide-react";
 import Link from "next/link";
-
-const streams = [
-  {
-    title: "Engineering & Tech",
-    category: "B.Tech / B.E.",
-    duration: "4 Yrs",
-    salary: "4-12",
-    icon: Laptop,
-    color: "bg-blue-600",
-    careers: ["Software Engineer", "Mechanical Engineer", "Civil Engineer"]
-  },
-  {
-    title: "Medical & Healthcare",
-    category: "MBBS, BDS, BAMS",
-    duration: "5.5 Yrs",
-    salary: "5-15",
-    icon: HeartPulse,
-    color: "bg-red-500",
-    careers: ["Doctor", "Surgeon", "Dentist", "Therapist"]
-  },
-  {
-    title: "Agriculture",
-    category: "B.Sc Agriculture",
-    duration: "4 Yrs",
-    salary: "3-8",
-    icon: Leaf,
-    color: "bg-green-600",
-    careers: ["Agronomist", "Research Scientist", "Forest Officer"]
-  },
-  {
-    title: "Commerce",
-    category: "B.Com, BBA, CA",
-    duration: "3-5 Yrs",
-    salary: "4-10",
-    icon: Calculator,
-    color: "bg-indigo-600",
-    careers: ["Chartered Accountant", "Financial Analyst", "HR Manager"]
-  },
-  {
-    title: "Arts & Humanities",
-    category: "BA, Journalism",
-    duration: "3 Yrs",
-    salary: "3-7",
-    icon: Palette,
-    color: "bg-pink-500",
-    careers: ["Journalist", "Psychologist", "Content Writer"]
-  },
-  {
-    title: "Law",
-    category: "Integrated LLB",
-    duration: "5 Yrs",
-    salary: "4-15",
-    icon: Scale,
-    color: "bg-amber-600",
-    careers: ["Corporate Lawyer", "Judge", "Legal Advisor"]
-  },
-  {
-    title: "Hotel Management",
-    category: "BHM",
-    duration: "3-4 Yrs",
-    salary: "3-8",
-    icon: Building,
-    color: "bg-teal-600",
-    careers: ["Hotel Manager", "Chef", "Event Coordinator"]
-  },
-  {
-    title: "Aviation",
-    category: "Pilot, Cabin Crew",
-    duration: "1-3 Yrs",
-    salary: "5-20",
-    icon: Plane,
-    color: "bg-sky-500",
-    careers: ["Commercial Pilot", "Air Hostess", "ATC"]
-  },
-  {
-    title: "Defence",
-    category: "NDA",
-    duration: "3-4 Yrs",
-    salary: "6-12",
-    icon: Shield,
-    color: "bg-slate-700",
-    careers: ["Army Officer", "Navy Officer", "Air Force Pilot"]
-  }
-];
+import { useEffect, useState } from "react";
 
 export default function After12th() {
+  const [streams, setStreams] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/education?level=after_12th')
+      .then(res => res.json())
+      .then(data => {
+        setStreams(data.courses);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
   return (
     <MainLayout>
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
@@ -134,17 +66,21 @@ export default function After12th() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-        {streams.map((stream, idx) => (
-          <CourseCard key={idx} {...stream} />
-        ))}
+        {loading ? (
+          <div className="col-span-full py-12 text-center text-gray-500">Loading courses...</div>
+        ) : (
+          streams.map((stream, idx) => (
+            <CourseCard key={idx} {...stream} />
+          ))
+        )}
       </div>
       
       {/* Sections for Entrance Exams & Mentors related to After 12th */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4">
              <h3 className="font-bold text-indigo-900">Entrance Exams</h3>
-             <button className="text-indigo-600 text-sm font-medium hover:underline">View All</button>
+             <Link href="/education/after-12th/exams" className="text-indigo-600 text-sm font-medium hover:underline">View All</Link>
           </div>
           <p className="text-sm text-indigo-800/70 mb-4">Check important entrance exams for your dream course.</p>
           <div className="flex flex-wrap gap-2">
@@ -153,23 +89,6 @@ export default function After12th() {
             <span className="bg-white text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold border border-indigo-100">CUET</span>
             <span className="bg-white text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold border border-indigo-100">CLAT</span>
             <span className="bg-white text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold border border-indigo-100">NDA</span>
-          </div>
-        </div>
-
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-4">
-             <h3 className="font-bold text-gray-800">Need Guidance?</h3>
-             <button className="text-indigo-600 text-sm font-medium hover:underline">Book Mentor</button>
-          </div>
-          <p className="text-sm text-gray-600 mb-4">Connect with students and professionals from top institutes.</p>
-          <div className="flex items-center gap-3">
-             <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                <MonitorPlay className="w-5 h-5 text-indigo-600" />
-             </div>
-             <div>
-               <p className="text-sm font-semibold text-gray-800">1-on-1 Mentorship</p>
-               <p className="text-xs text-gray-500">Starting at ₹299/session</p>
-             </div>
           </div>
         </div>
       </div>

@@ -6,12 +6,12 @@ import { BookOpen, Landmark, BriefcaseMedical, Code, Cpu, Target, ArrowRight } f
 import Link from "next/link";
 
 const exams = [
-  { name: "UPSC CSE", category: "Civil Services", icon: Landmark, color: "bg-orange-500", applicants: "10L+" },
-  { name: "JEE Advanced", category: "Engineering", icon: Code, color: "bg-blue-600", applicants: "1.5L+" },
-  { name: "NEET UG", category: "Medical", icon: BriefcaseMedical, color: "bg-red-500", applicants: "24L+" },
-  { name: "GATE", category: "Postgraduate Engg", icon: Cpu, color: "bg-indigo-500", applicants: "8L+" },
-  { name: "CAT", category: "Management", icon: Target, color: "bg-amber-500", applicants: "3L+" },
-  { name: "SSC CGL", category: "Govt. Jobs", icon: Landmark, color: "bg-emerald-600", applicants: "15L+" },
+  { id: "upsc-cse", name: "UPSC CSE", category: "Civil Services", icon: Landmark, color: "bg-orange-500", applicants: "10L+" },
+  { id: "jee-advanced", name: "JEE Advanced", category: "Engineering", icon: Code, color: "bg-blue-600", applicants: "1.5L+" },
+  { id: "neet-ug", name: "NEET UG", category: "Medical", icon: BriefcaseMedical, color: "bg-red-500", applicants: "24L+" },
+  { id: "gate", name: "GATE", category: "Postgraduate Engg", icon: Cpu, color: "bg-indigo-500", applicants: "8L+" },
+  { id: "cat", name: "CAT", category: "Management", icon: Target, color: "bg-amber-500", applicants: "3L+" },
+  { id: "ssc-cgl", name: "SSC CGL", category: "Govt. Jobs", icon: Landmark, color: "bg-emerald-600", applicants: "15L+" },
 ];
 
 const categories = ["All", "Government", "Engineering", "Medical", "Management", "Law", "Defence"];
@@ -28,12 +28,12 @@ export default function CompetitiveExams() {
           Everything you need to crack India's toughest exams. Get syllabus, preparation strategies, AI roadmaps, and coaching center details.
         </p>
         <div className="flex gap-4">
-          <button className="bg-white text-orange-700 px-5 py-2 rounded-lg font-semibold hover:bg-orange-50 transition-colors shadow-sm text-sm">
+          <a href="/roadmap" className="bg-white text-orange-700 px-5 py-2 rounded-lg font-semibold hover:bg-orange-50 transition-colors shadow-sm text-sm inline-block text-center">
             AI Exam Roadmap
-          </button>
-          <button className="bg-orange-800/40 border border-orange-400 hover:bg-orange-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm">
-            Mock Tests
-          </button>
+          </a>
+          <a href="/resources" className="bg-orange-800/40 border border-orange-400 hover:bg-orange-800/60 px-5 py-2 rounded-lg font-semibold transition-colors text-sm backdrop-blur-sm inline-block text-center text-white">
+            Study Materials
+          </a>
         </div>
       </div>
 
@@ -47,29 +47,31 @@ export default function CompetitiveExams() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
         {exams.map((exam, idx) => (
-          <div key={idx} className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:border-orange-200 transition-all cursor-pointer group">
-            <div className="flex justify-between items-start mb-4">
-              <div className={`w-12 h-12 ${exam.color} rounded-lg flex items-center justify-center text-white`}>
-                <exam.icon className="w-6 h-6" />
+          <Link href={`/competitive-exams/${exam.id}`} key={idx}>
+            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:border-orange-200 transition-all cursor-pointer group h-full flex flex-col">
+              <div className="flex justify-between items-start mb-4">
+                <div className={`w-12 h-12 ${exam.color} rounded-lg flex items-center justify-center text-white`}>
+                  <exam.icon className="w-6 h-6" />
+                </div>
+                <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded font-medium">
+                  {exam.applicants} Aspirants
+                </span>
               </div>
-              <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded font-medium">
-                {exam.applicants} Aspirants
+              <h3 className="font-bold text-gray-800 text-lg group-hover:text-orange-600 transition-colors">{exam.name}</h3>
+              <p className="text-sm text-gray-500 font-medium mb-4 flex-grow">{exam.category}</p>
+              
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                 <div className="text-xs text-gray-600 bg-gray-50 px-2 py-1.5 rounded text-center">Syllabus</div>
+                 <div className="text-xs text-gray-600 bg-gray-50 px-2 py-1.5 rounded text-center">Exam Pattern</div>
+                 <div className="text-xs text-gray-600 bg-gray-50 px-2 py-1.5 rounded text-center">Resources</div>
+                 <div className="text-xs text-gray-600 bg-gray-50 px-2 py-1.5 rounded text-center">Strategy</div>
+              </div>
+
+              <span className="text-sm font-semibold text-orange-600 flex items-center gap-1 group-hover:gap-2 transition-all mt-auto pt-2 border-t border-gray-50">
+                View Details <ArrowRight className="w-4 h-4" />
               </span>
             </div>
-            <h3 className="font-bold text-gray-800 text-lg group-hover:text-orange-600 transition-colors">{exam.name}</h3>
-            <p className="text-sm text-gray-500 font-medium mb-4">{exam.category}</p>
-            
-            <div className="grid grid-cols-2 gap-2 mb-4">
-               <div className="text-xs text-gray-600 bg-gray-50 px-2 py-1.5 rounded text-center">Syllabus</div>
-               <div className="text-xs text-gray-600 bg-gray-50 px-2 py-1.5 rounded text-center">Exam Pattern</div>
-               <div className="text-xs text-gray-600 bg-gray-50 px-2 py-1.5 rounded text-center">Resources</div>
-               <div className="text-xs text-gray-600 bg-gray-50 px-2 py-1.5 rounded text-center">Strategy</div>
-            </div>
-
-            <span className="text-sm font-semibold text-orange-600 flex items-center gap-1 group-hover:gap-2 transition-all">
-              View Details <ArrowRight className="w-4 h-4" />
-            </span>
-          </div>
+          </Link>
         ))}
       </div>
 
