@@ -1,0 +1,13 @@
+# Local Netlify folder
+.netlify
+node_modules/
+.next/
+dist/
+.env
+.env.local
+.env.production
+.env.development
+Back end/dev.db
+Front end/.next/
+Front end/node_modules/
+Back end/node_modules/
