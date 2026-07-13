@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
 
@@ -72,6 +71,7 @@ async function main() {
   });
 
   console.log("Seeding mentors...");
+  const bcrypt = require('bcrypt');
   const hashedPassword = await bcrypt.hash('password123', 10);
 
   // Mentor 1

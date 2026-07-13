@@ -42,10 +42,6 @@ app.get('/', (req, res) => {
   res.send('Be You API is running...');
 });
 
-if (process.env.NETLIFY !== 'true' && !process.env.AWS_LAMBDA_FUNCTION_NAME) {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
-
-export default app;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
