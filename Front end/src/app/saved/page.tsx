@@ -34,7 +34,7 @@ export default function Saved() {
 
     setLoading(true);
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/saved`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "\"}/api/saved`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -74,7 +74,7 @@ export default function Saved() {
 
   const handleUnsave = async (itemType: string, itemId: number) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/saved/${itemType}/${itemId}`, {
+      const res = await fetch(`\/api/saved/${itemType}/${itemId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`

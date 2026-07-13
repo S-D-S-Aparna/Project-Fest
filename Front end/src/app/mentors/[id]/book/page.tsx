@@ -38,7 +38,7 @@ export default function BookMentorDetails({ params }: { params: Promise<{ id: st
   useEffect(() => {
     const fetchMentor = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/mentors/${mentorId}`);
+        const response = await axios.get(`\/api/users/mentors/${mentorId}`);
         setMentor(response.data.mentor);
         // Default stream to their first expertise if available
         if (response.data.mentor?.mentorProfile?.expertise?.length > 0) {
@@ -73,7 +73,7 @@ export default function BookMentorDetails({ params }: { params: Promise<{ id: st
       const dateTime = new Date(`${date}T${time}`).toISOString();
 
       await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/bookings`,
+        `${process.env.NEXT_PUBLIC_API_URL || "\"}/api/bookings`,
         {
           mentorId: parseInt(mentorId),
           date: dateTime,

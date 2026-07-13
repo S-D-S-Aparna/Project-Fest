@@ -20,7 +20,7 @@ export default function MentorDetails({ params }: { params: Promise<{ id: string
   useEffect(() => {
     const fetchMentor = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/mentors/${mentorId}`);
+        const response = await axios.get(`\/api/users/mentors/${mentorId}`);
         setMentor(response.data.mentor);
       } catch (err) {
         console.error("Failed to fetch mentor:", err);

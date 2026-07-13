@@ -32,7 +32,7 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/${activeTab}`);
+      const res = await axios.get(`\/api/${activeTab}`);
       // APIs return { users: [] }, { scholarships: [] }, etc.
       setData(res.data[activeTab]);
     } catch (error) {
@@ -51,7 +51,7 @@ export default function AdminDashboard() {
     
     setActionLoading(true);
     try {
-      await axios.delete(`http://localhost:5000/api/${activeTab}/${id}`, {
+      await axios.delete(`\/api/${activeTab}/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchData(); // Refresh list
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
   const handleRoleChange = async (userId: number, newRole: string) => {
     setActionLoading(true);
     try {
-      await axios.patch(`http://localhost:5000/api/users/${userId}/role`, { role: newRole }, {
+      await axios.patch(`\/api/users/${userId}/role`, { role: newRole }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchData();
@@ -82,7 +82,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setActionLoading(true);
     try {
-      await axios.post(`http://localhost:5000/api/${activeTab}`, formData, {
+      await axios.post(`\/api/${activeTab}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setFormData({});
