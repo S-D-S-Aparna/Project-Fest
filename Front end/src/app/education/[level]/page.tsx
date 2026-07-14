@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
+import ModuleMentors from "@/components/mentors/ModuleMentors";
 
 const educationData: Record<string, any> = {
   "after-10th": {
@@ -83,7 +84,7 @@ export default function EducationLevelPage() {
   const handleRegister = async (event: any) => {
     if (!user) {
       toast.error("Please login to register.");
-      router.push("/auth/login");
+      router.push("/login");
       return;
     }
 
@@ -212,6 +213,9 @@ export default function EducationLevelPage() {
           ))}
         </div>
       </div>
+
+      {/* Book Mentor Section */}
+      <ModuleMentors category="All Mentors" />
     </MainLayout>
   );
 }

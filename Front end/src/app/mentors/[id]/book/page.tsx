@@ -7,6 +7,8 @@ import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { FEATURED_MENTORS } from "../../featuredMentors";
 
 interface MentorProfile {
   role?: string;
@@ -15,7 +17,10 @@ interface MentorProfile {
 }
 
 interface Mentor {
+  id?: string | number;
   name: string;
+  isFeaturedSample?: boolean;
+  featuredImage?: string;
   mentorProfile?: MentorProfile;
 }
 
@@ -38,7 +43,19 @@ export default function BookMentorDetails({ params }: { params: Promise<{ id: st
   useEffect(() => {
     const fetchMentor = async () => {
       try {
-        const response = await axios.get(`\/api/users/mentors/${mentorId}`);
+        if (typeof mentorId === 'string' && mentorId.startsWith('featured-')) {
+          const featured = FEATURED_MENTORS[mentorId];
+          if (featured) {
+            setMentor(featured);
+            if (featured.mentorProfile?.expertise?.length > 0) {
+              setStream(featured.mentorProfile.expertise[0]);
+            }
+            setLoading(false);
+            return;
+          }
+        }
+
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/users/mentors/${mentorId}`);
         setMentor(response.data.mentor);
         // Default stream to their first expertise if available
         if (response.data.mentor?.mentorProfile?.expertise?.length > 0) {
@@ -72,20 +89,24 @@ export default function BookMentorDetails({ params }: { params: Promise<{ id: st
       // Combine date and time for backend
       const dateTime = new Date(`${date}T${time}`).toISOString();
 
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL || "\"}/api/bookings`,
-        {
-          mentorId: parseInt(mentorId),
-          date: dateTime,
-          stream,
-          notes
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-      
-      router.push(`/mentors/booking-success?stream=${encodeURIComponent(stream)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&mentor=${encodeURIComponent(mentor.name)}`);
+      if (typeof mentorId === 'string' && mentorId.startsWith('featured-')) {
+        // Mock the backend booking for sample profiles
+        await new Promise(resolve => setTimeout(resolve, 800));
+      } else {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/bookings`,
+          {
+            mentorId: parseInt(mentorId),
+            date: dateTime,
+            stream,
+            notes
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+      }
+      router.push(`/mentors/booking-confirmed?stream=${encodeURIComponent(stream)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&mentor=${encodeURIComponent(mentor.name)}`);
     } catch (error: unknown) {
       console.error("Booking error:", error);
       const message = axios.isAxiosError(error)
@@ -134,8 +155,27 @@ export default function BookMentorDetails({ params }: { params: Promise<{ id: st
             <h2 className="text-2xl font-bold mb-6">Booking Details</h2>
             
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 bg-white rounded-full p-1 shrink-0 shadow-lg">
-                <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.name}`} alt={mentor.name} className="w-full h-full object-cover rounded-full bg-indigo-50" />
+              <div className={`w-20 h-20 bg-white rounded-full p-1 shrink-0 shadow-lg relative overflow-hidden flex items-center justify-center ${mentor.isFeaturedSample ? 'bg-gradient-to-br from-orange-400 to-pink-500' : ''}`}>
+                {mentor.isFeaturedSample ? (
+                  <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                    <Image 
+                      src={mentor.featuredImage!} 
+                      alt={mentor.name} 
+                      width={55}
+                      height={55}
+                      className="object-contain" 
+                      unoptimized
+                    />
+                  </div>
+                ) : (
+                  <Image 
+                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.name}`} 
+                    alt={mentor.name} 
+                    fill
+                    className="object-cover rounded-full bg-indigo-50" 
+                    unoptimized
+                  />
+                )}
               </div>
               <div>
                 <h3 className="font-bold text-lg leading-tight">{mentor.name}</h3>

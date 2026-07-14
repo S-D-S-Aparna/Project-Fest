@@ -2,25 +2,32 @@
 
 import { useState, useEffect, use } from "react";
 import MainLayout from "@/components/layout/MainLayout";
-import { Star, Video, MessageSquare, Calendar, ChevronRight, CheckCircle2, Award, Briefcase, Clock, FileText, ArrowRight, ArrowLeft } from "lucide-react";
+import { Star, Video, Calendar, ChevronRight, CheckCircle2, Award, Clock, FileText, ArrowRight, ArrowLeft } from "lucide-react";
 import axios from "axios";
-import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { FEATURED_MENTORS } from "../featuredMentors";
 
 export default function MentorDetails({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const mentorId = resolvedParams.id;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [mentor, setMentor] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { token } = useAuth();
-  const router = useRouter();
 
   useEffect(() => {
     const fetchMentor = async () => {
       try {
-        const response = await axios.get(`\/api/users/mentors/${mentorId}`);
+        if (typeof mentorId === 'string' && mentorId.startsWith('featured-')) {
+          const featured = FEATURED_MENTORS[mentorId];
+          if (featured) {
+            setMentor(featured);
+            setLoading(false);
+            return;
+          }
+        }
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/users/mentors/${mentorId}`);
         setMentor(response.data.mentor);
       } catch (err) {
         console.error("Failed to fetch mentor:", err);
@@ -76,8 +83,27 @@ export default function MentorDetails({ params }: { params: Promise<{ id: string
              <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
              
              <div className="relative mt-8 mb-4 inline-block">
-               <div className="w-28 h-28 bg-white p-1 rounded-full mx-auto relative z-10 shadow-md">
-                 <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.name}`} alt={mentor.name} className="w-full h-full object-cover rounded-full bg-indigo-50" />
+               <div className={`w-32 h-32 bg-white p-1 rounded-full mx-auto relative z-10 shadow-md overflow-hidden flex items-center justify-center ${mentor.isFeaturedSample ? 'bg-gradient-to-br from-orange-400 to-pink-500' : ''}`}>
+                 {mentor.isFeaturedSample ? (
+                   <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                     <Image 
+                       src={mentor.featuredImage} 
+                       alt={mentor.name} 
+                       width={90}
+                       height={90}
+                       className="object-contain" 
+                       unoptimized
+                     />
+                   </div>
+                 ) : (
+                   <Image 
+                     src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.name}`} 
+                     alt={mentor.name} 
+                     fill
+                     className="object-cover bg-indigo-50" 
+                     unoptimized
+                   />
+                 )}
                </div>
                <div className="absolute bottom-1 right-2 w-6 h-6 bg-green-500 border-2 border-white rounded-full z-20 flex items-center justify-center" title="Available Now">
                   <CheckCircle2 className="w-3.5 h-3.5 text-white" />

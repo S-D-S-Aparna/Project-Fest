@@ -7,7 +7,7 @@ import { useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import confetti from "canvas-confetti";
 
-function BookingSuccessContent() {
+function BookingConfirmedContent() {
   const searchParams = useSearchParams();
   const mentor = searchParams.get("mentor");
   const stream = searchParams.get("stream");
@@ -54,7 +54,7 @@ function BookingSuccessContent() {
 
         <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Booking Confirmed!</h1>
         <p className="text-lg text-gray-600 mb-8 max-w-md mx-auto">
-          You're all set. We've sent a calendar invite to your email with the Google Meet link.
+          You&apos;re all set. We&apos;ve sent a calendar invite to your email with the Google Meet link.
         </p>
 
         {/* Dynamic Booking Details (EDD) */}
@@ -93,8 +93,16 @@ function BookingSuccessContent() {
         <div className="bg-gray-50 rounded-2xl p-6 mb-10 border border-gray-100 flex flex-col sm:flex-row items-center justify-center gap-4 text-left">
            <CalendarDays className="w-10 h-10 text-indigo-500 shrink-0" />
            <div>
-             <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Next Step</p>
-             <p className="text-gray-800 font-medium text-sm sm:text-base">Prepare 3-5 specific questions for your mentor to make the most of your 1-on-1 session.</p>
+             <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Next Step for {stream || "Your Session"}</p>
+             {stream === "Sports" || stream === "Athletics" ? (
+                <p className="text-gray-800 font-medium text-sm sm:text-base">Get your athletic gear ready and outline your current training routines so the coach can optimize them.</p>
+             ) : stream?.includes("Exam") || stream?.includes("UPSC") || stream?.includes("JEE") ? (
+                <p className="text-gray-800 font-medium text-sm sm:text-base">Gather your latest mock test scores and highlight your weakest subjects for a targeted strategy session.</p>
+             ) : stream?.includes("Engineering") || stream?.includes("Design") || stream?.includes("Data") ? (
+                <p className="text-gray-800 font-medium text-sm sm:text-base">Ensure your portfolio or GitHub links are ready to share. Write down 3 technical roadblocks you&apos;re facing.</p>
+             ) : (
+                <p className="text-gray-800 font-medium text-sm sm:text-base">Prepare 3-5 specific questions for your mentor to make the most of your 1-on-1 session.</p>
+             )}
            </div>
         </div>
 
@@ -119,11 +127,11 @@ function BookingSuccessContent() {
   );
 }
 
-export default function BookingSuccess() {
+export default function BookingConfirmed() {
   return (
     <MainLayout>
       <Suspense fallback={<div className="py-20 text-center">Loading confirmation...</div>}>
-        <BookingSuccessContent />
+        <BookingConfirmedContent />
       </Suspense>
     </MainLayout>
   );

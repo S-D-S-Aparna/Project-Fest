@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
+import ModuleMentors from "@/components/mentors/ModuleMentors";
 
 interface SportEvent {
   id: number;
@@ -90,7 +91,7 @@ export default function SportPage() {
   const handleRegister = async (event: SportEvent) => {
     if (!user) {
       toast.error("Please login to register for sports events.");
-      router.push("/auth/login");
+      router.push("/login");
       return;
     }
 
@@ -219,6 +220,9 @@ export default function SportPage() {
           ))}
         </div>
       </div>
+      
+      {/* Book Mentor Section */}
+      <ModuleMentors category="Sports" />
     </MainLayout>
   );
 }

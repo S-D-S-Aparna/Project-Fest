@@ -28,7 +28,7 @@ export default function Events() {
   const handleRegister = async (event: Event) => {
     if (!user) {
       toast.error("Please login to register for events.");
-      router.push("/auth/login");
+      router.push("/login");
       return;
     }
 

@@ -1,8 +1,6 @@
 import { Router } from "express";
-import { GoogleGenAI } from "@google/genai";
 
 const router = Router();
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const SYSTEM_INSTRUCTION = `
 You are 'Be You AI', a friendly and expert career counselor for the 'Be You' platform.
@@ -31,25 +29,45 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Invalid messages array" });
     }
 
-    // Format messages for Gemini API
-    const history = messages.map((msg: any) => ({
-      role: msg.role === 'ai' ? 'model' : 'user',
-      parts: [{ text: msg.content }]
-    }));
+    // Format messages for HuggingFace Llama-3
+    const formattedMessages = [
+      { role: "system", content: SYSTEM_INSTRUCTION },
+      ...messages.map((msg: any) => ({
+        role: msg.role === 'ai' ? 'assistant' : 'user',
+        content: msg.content
+      }))
+    ];
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: history,
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION
+    try {
+      const hfResponse = await fetch("https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          messages: formattedMessages,
+          max_tokens: 500,
+          temperature: 0.7
+        })
+      });
+
+      if (!hfResponse.ok) {
+        throw new Error(`HuggingFace API error: ${hfResponse.statusText}`);
       }
-    });
 
-    const reply = response.text || "I'm sorry, I couldn't process that request.";
-    
-    res.status(200).json({ reply });
+      const data = await hfResponse.json();
+      const reply = data.choices?.[0]?.message?.content || "I'm sorry, I couldn't process that request right now.";
+      
+      res.status(200).json({ reply });
+    } catch (apiError) {
+      console.warn("AI chat failed, returning fallback response.");
+      res.status(200).json({ 
+        reply: "I'm currently experiencing high demand. Please try again in a moment, or explore our Mentorship Hub and Career Roadmap features in the meantime!" 
+      });
+    }
   } catch (error) {
-    console.error("Gemini API Error:", error);
+    console.error("Chat API Error:", error);
     res.status(500).json({ error: "Failed to generate AI response" });
   }
 });

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
+import ModuleMentors from "@/components/mentors/ModuleMentors";
 
 const examData: Record<string, any> = {
   "upsc-cse": {
@@ -63,7 +64,7 @@ export default function CompetitiveExamPage() {
   const handleRegister = async (event: any) => {
     if (!user) {
       toast.error("Please login to register.");
-      router.push("/auth/login");
+      router.push("/login");
       return;
     }
 
@@ -192,6 +193,9 @@ export default function CompetitiveExamPage() {
           ))}
         </div>
       </div>
+      
+      {/* Book Mentor Section */}
+      <ModuleMentors category="Government Exams" />
     </MainLayout>
   );
 }

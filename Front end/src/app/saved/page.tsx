@@ -34,7 +34,7 @@ export default function Saved() {
 
     setLoading(true);
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || "\"}/api/saved`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/saved`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

@@ -54,7 +54,20 @@ router.get("/mentors", async (req, res) => {
         mentorProfile: true
       }
     });
-    res.status(200).json({ mentors });
+    // Parse expertise if it's a string
+    const formattedMentors = mentors.map(m => {
+      if (m.mentorProfile && typeof m.mentorProfile.expertise === 'string') {
+        try {
+          // Attempt to parse JSON string
+          m.mentorProfile.expertise = JSON.parse(m.mentorProfile.expertise);
+        } catch (e) {
+          // Fallback to comma separated string
+          m.mentorProfile.expertise = m.mentorProfile.expertise.split(',').map(s => s.trim()) as any;
+        }
+      }
+      return m;
+    });
+    res.status(200).json({ mentors: formattedMentors });
   } catch (error) {
     console.error("Error fetching mentors:", error);
     res.status(500).json({ error: "Failed to fetch mentors" });
@@ -77,6 +90,14 @@ router.get("/mentors/:id", async (req, res) => {
     
     if (!mentor) {
       return res.status(404).json({ error: "Mentor not found" });
+    }
+    
+    if (mentor.mentorProfile && typeof mentor.mentorProfile.expertise === 'string') {
+      try {
+        mentor.mentorProfile.expertise = JSON.parse(mentor.mentorProfile.expertise);
+      } catch (e) {
+        mentor.mentorProfile.expertise = mentor.mentorProfile.expertise.split(',').map(s => s.trim()) as any;
+      }
     }
     
     res.status(200).json({ mentor });

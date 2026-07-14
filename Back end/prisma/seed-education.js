@@ -44,7 +44,12 @@ async function main() {
         { title: "Medical & Clinical", category: "Healthcare", duration: "3-6 Yrs", salary: "15-40+", icon: "Globe", color: "bg-teal-600", careers: ["Medical Director", "Epidemiologist", "R&D Head"], educationLevel: "phd" }
     ];
     await prisma.educationCourse.deleteMany({});
-    await prisma.educationCourse.createMany({ data: courses });
+    await prisma.educationCourse.createMany({
+        data: courses.map(c => ({
+            ...c,
+            careers: JSON.stringify(c.careers)
+        }))
+    });
     console.log("Education courses seeded successfully!");
 }
 main()

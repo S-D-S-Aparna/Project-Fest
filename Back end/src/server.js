@@ -41,7 +41,10 @@ app.use('/api/event-registrations', event_registrations_1.default);
 app.get('/', (req, res) => {
     res.send('Be You API is running...');
 });
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+exports.default = app;
 //# sourceMappingURL=server.js.map

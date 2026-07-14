@@ -50,7 +50,12 @@ async function main() {
   ];
 
   await prisma.educationCourse.deleteMany({});
-  await prisma.educationCourse.createMany({ data: courses });
+  await prisma.educationCourse.createMany({ 
+    data: courses.map(c => ({
+      ...c,
+      careers: JSON.stringify(c.careers)
+    }))
+  });
 
   console.log("Education courses seeded successfully!");
 }

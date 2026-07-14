@@ -13,7 +13,19 @@ const getEducationCourses = async (req, res) => {
             where: filter,
             orderBy: { id: 'asc' }
         });
-        res.json({ courses });
+        const parsedCourses = courses.map(course => {
+            let parsedCareers = [];
+            if (typeof course.careers === 'string') {
+                try {
+                    parsedCareers = JSON.parse(course.careers);
+                }
+                catch (e) {
+                    parsedCareers = course.careers.split(',').map(s => s.trim());
+                }
+            }
+            return { ...course, careers: parsedCareers };
+        });
+        res.json({ courses: parsedCourses });
     }
     catch (error) {
         console.error(error);

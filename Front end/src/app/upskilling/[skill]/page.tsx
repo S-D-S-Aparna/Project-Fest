@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
+import ModuleMentors from "@/components/mentors/ModuleMentors";
 
 interface UpskillingEvent {
   id: number;
@@ -89,7 +90,7 @@ export default function UpskillingSkillPage() {
   const handleRegister = async (event: UpskillingEvent) => {
     if (!user) {
       toast.error("Please login to register.");
-      router.push("/auth/login");
+      router.push("/login");
       return;
     }
 
@@ -218,6 +219,9 @@ export default function UpskillingSkillPage() {
           ))}
         </div>
       </div>
+      
+      {/* Book Mentor Section */}
+      <ModuleMentors category="Engineering" />
     </MainLayout>
   );
 }

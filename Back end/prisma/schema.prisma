@@ -7,7 +7,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://neondb_owner:npg_KQlMo9Vcp3UR@ep-calm-snow-atup6agn-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+"
 }
 
 model User {
@@ -42,7 +44,7 @@ model MentorProfile {
   bio             String
   company         String?
   role            String?
-  expertise       String[]
+  expertise       String
   yearsExperience Int?
   hourlyRate      Int?
   rating          Float?   @default(0)
@@ -157,7 +159,7 @@ model EducationCourse {
   salary         String
   icon           String
   color          String
-  careers        String[] // PostgreSQL string array
+  careers        String // PostgreSQL string array
   educationLevel String   // after_10th, after_12th, bachelors, masters, phd
   createdAt      DateTime @default(now())
 }
@@ -172,3 +174,5 @@ model EventRegistration {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
+
+
